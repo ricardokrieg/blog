@@ -27,13 +27,13 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ DOCKERHUB_USERNAME }}/blog-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest
       - name: Deploy backend
         id: deploy-backend
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: blog-backend
-          image: ${{ DOCKERHUB_USERNAME }}/blog-backend:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest
           regin: ${{ secrets.GOOGLECLOUD_REGION }}
       - name: Build and push frontend image
         uses: docker/build-push-action@v4
@@ -41,12 +41,12 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ DOCKERHUB_USERNAME }}/blog-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest
           build-args: VITE_BACKEND_URL=${{ steps.deploy-backend.outputs.url }}/api/v1
       - name: Deploy frontend
         id: deploy-frontend
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: blog-frontend
-          image: ${{ DOCKERHUB_USERNAME }}/blog-frontend:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest
           regin: ${{ secrets.GOOGLECLOUD_REGION }}
