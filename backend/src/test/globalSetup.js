@@ -1,7 +1,9 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
 
 export default async function globalSetup() {
-  const instance = await MongoMemoryServer.create()
+  const instance = await MongoMemoryServer.create({
+    binary: "8.0.4",
+  })
 
   global.__MONGOINSTANCE = instance
   process.env.DATABASE_URL = instance.getUri()
